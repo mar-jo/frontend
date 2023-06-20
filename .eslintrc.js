@@ -1,18 +1,13 @@
 module.exports = {
+  root: true,
   env: {
-    node: true,
-    es6: true,
+      node: true,
   },
   extends: [
-    'airbnb-base',
-    'plugin:node/recommended',
+      'plugin:vue/recommended',
+      'eslint:recommended',
   ],
   parserOptions: {
-    ecmaVersion: 2021,
-  },
-  rules: {
-    'global-require': 0,
-    'no-unused-vars': 0,
-    'consistent-return': 0,
+      parser: '@babel/eslint-parser',
   },
 };
