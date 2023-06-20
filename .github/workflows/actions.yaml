@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Install ESLint
-      run: npm install eslint eslint-plugin-vue --save-dev
-
     - name: Run Lint
       run: npm run lint
 
