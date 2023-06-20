@@ -10,7 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - uses: actions/checkout@v2
+    
     - name: Run Lint
+      working-directory: ./frontend
       run: npm run lint
 
   Test:
