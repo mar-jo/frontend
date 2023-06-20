@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v2
     
     - name: Run Lint
-      working-directory: ./frontend
+      working-directory: ./src
       run: npm run lint
 
   Test:
