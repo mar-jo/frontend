@@ -34,6 +34,9 @@ npm run build
 - State management if logged in or not
 - get the todos of only the specific user
 - improve login and register modal
+- test framework:
+    - install and configure
+    - test
 
 Allgemein requirements
 1. LOGIN: Allow users to register and login, so that multiple users can use your
