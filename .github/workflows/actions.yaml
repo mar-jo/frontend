@@ -102,8 +102,9 @@ jobs:
 
     - name: Execute commands on remote server
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USERNAME }}@${{ secrets.HOST }} <<EOF
-        echo 'Running some commands'
-        ls -la
-        echo 'Command execution completed'
+        ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.HOST }} <<EOF
+        sudo docker stop frontend || true
+        sudo docker rm frontend || true
+        sudo docker pull realmarjo/frontend:latest
+        sudo docker run -d --name frontend -p 5173:5173 realmarjo/frontend:latest
         EOF
