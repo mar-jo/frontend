@@ -1,21 +1,35 @@
 import axios from "axios";
 
+const setAuthToken = (token) => {
+	axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+};
+
 const register = async (username, password) => {
-	console.log("in register", {username: password});
-	let res = await axios.post("http://localhost:8080/todos/register", {
-		username: username,
-		password: password,
-	});
-	return res.data;
+	console.log("in register", { username: password });
+	try {
+		const res = await axios.post("http://localhost:8080/todos/register", {
+			username: username,
+			password: password,
+		});
+		return res.data;
+	} catch (error) {
+		console.log("Error in reg: ", error);
+	}
 };
 
 const login = async (username, password) => {
-	console.log("in login:", {username: username}, {password: password});
-	let res = await axios.post("http://localhost:8080/todos/login", {
-		username: username,
-		password: password,
-	});
-	return res.data;
+	console.log("in login:", { username: username }, { password: password });
+	try {
+		const res = await axios.post("http://localhost:8080/todos/login", {
+			username: username,
+			password: password,
+		});
+		// Set the token in cookies
+		setAuthToken(res.data.token);
+		return res.data;
+	} catch (error) {
+		console.log("Error in login: ", error);
+	}
 };
 
 
@@ -29,6 +43,7 @@ const createTodo = async (name) => {
 	let res = await axios.post("http://localhost:8080/todos", {
 		name: name,
 	});
+	console.log("CREATE TODO", res);
 
 	return res.data;
 };
@@ -44,5 +59,7 @@ const undoneTodo = async (id) => {
 
 	return res.data;
 };
+
+
 
 export { login, register, readTodos, createTodo, doneTodo, undoneTodo };
