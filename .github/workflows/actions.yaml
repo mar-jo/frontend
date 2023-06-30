@@ -95,12 +95,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: Deploy to AWS EC2
-      uses: appleboy/ssh-action@master
+    - name: Install SSH key
+      uses: webfactory/ssh-agent@v0.5.3
       with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.KEY }}
-        script: |
-          echo 'Running commands'
-          ls -la
+        ssh-private-key: ${{ secrets.KEY }}
+
+    - name: Execute commands on remote server
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USERNAME }}@${{ secrets.HOST }} <<EOF
+        echo 'Running some commands'
+        ls -la
+        echo 'Command execution completed'
+        EOF
