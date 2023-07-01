@@ -58,9 +58,10 @@ jobs:
       with:
         context: .
         push: false
-        tags: user/app:latest
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
+        tags: user/app:latest, user/app:cache
+        cache-from: type=registry,ref=user/app:cache
+        cache-to: type=registry,ref=user/app:cache,mode=max
+
 
   Deliver:
     needs: Build
@@ -86,9 +87,9 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/frontend:latest
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
+        tags: ${{ secrets.DOCKER_USERNAME }}/frontend:latest, user/app:cache
+        cache-from: type=registry,ref=user/app:cache
+        cache-to: type=registry,ref=user/app:cache,mode=max
 
   Deploy:
     needs: Deliver
