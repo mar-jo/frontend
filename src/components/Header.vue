@@ -1,33 +1,72 @@
-
 <script>
-import { ref } from "vue";
-import LoginRegisterModal from "@/components/LoginSignup/LoginRegisterModal.vue";
-export default {
-	name: "Header",
-	setup() {
-		const isModalOpen = ref(false);
+import Login from "./LoginSignup/Login.vue";
+import Register from "./LoginSignup/Register.vue";
 
-		const toggleModal = () => {
-			isModalOpen.value = !isModalOpen.value;
-		};
-		
+export default {
+	components: {
+		Login: Login,
+		Register: Register,
+	},
+	data() {
 		return {
-			toggleModal,
-			isModalOpen,
+			modalFirst: false,
+			modalSecond: {
+				show: false,
+				name: "",
+				email: "",
+			},
+			Login: false,
+			Register: false,
 		};
 	},
-	components: {
-		LoginRegisterModal
-	}
+	methods: {},
 };
 </script>
 
 <template>
-	<header>
-		<div>
-			<h1>ToDo Manager</h1>
-			<button type="button" @click="toggleModal">LoginModal</button>
+	<div class="wrapper">
+		<!-- <wrapper-header> -->
+
+		<div class="wrapper-content">
+			<h2>Todo Manager</h2>
 		</div>
-		<LoginRegisterModal :isOpen="isModalOpen" :toggleModal="toggleModal" />
-	</header>
+		<div class="wrapper-content">
+			<section>
+				<div class="container">
+					<!-- Login with Validate -->
+					<button class="btn btnPrimary" @click="Login = !Login">
+						Login
+					</button>
+					<Login
+						v-show="Login"
+						@close="Login = false"
+						@switch="
+							Login = false;
+							Register = true;
+						"
+					>
+					</Login>
+
+					<!-- Register with Validate -->
+					<button
+						class="btn btnPrimary"
+						@click="Register = !Register"
+					>
+						Register
+					</button>
+					<Register
+						v-show="Register"
+						@close="Register = false"
+						@switch="
+							Register = false;
+							Login = true;
+						"
+					>
+					</Register>
+				</div>
+			</section>
+		</div>
+
+		<!-- <wrapper-footer> -->
+	</div>
 </template>

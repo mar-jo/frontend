@@ -14,7 +14,8 @@
     "axios": "^1.2.0",
     "bootstrap": "^5.3.0",
     "bootstrap-vue": "^2.23.1",
-    "vue": "^3.2.45"
+    "vue": "^3.3.4",
+    "vuelidate": "^0.7.7"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.22.5",

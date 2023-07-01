@@ -26,9 +26,10 @@ const login = async (username, password) => {
 		});
 		// Set the token in cookies
 		setAuthToken(res.data.token);
-		return res.data;
+		return res;
 	} catch (error) {
 		console.log("Error in login: ", error);
+		return error.response.data.message;
 	}
 };
 

@@ -31,8 +31,8 @@ npm run build
 
 
 # TODOS
-- State management if logged in or not
-- get the todos of only the specific user
+- State management if logged in or not: BACKEND DONE
+- get the todos of only the specific user: BACKEND DONE
 - improve login and register modal
 - test framework:
     - install and configure
