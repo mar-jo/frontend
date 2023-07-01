@@ -64,9 +64,9 @@ jobs:
       with:
         context: .
         push: true
-        tags: user/app:latest, user/app:cache
-        cache-from: type=registry,ref=user/app:cache
-        cache-to: type=registry,ref=user/app:cache,mode=max
+        tags: ${{ secrets.DOCKER_USERNAME }}/frontend:latest, ${{ secrets.DOCKER_USERNAME }}/frontend:cache
+        cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:cache
+        cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:cache,mode=max
 
   Deliver:
     needs: Build
@@ -92,9 +92,9 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/frontend:latest, user/app:cache
-        cache-from: type=registry,ref=user/app:cache
-        cache-to: type=registry,ref=user/app:cache,mode=max
+        tags: ${{ secrets.DOCKER_USERNAME }}/frontend:latest, ${{ secrets.DOCKER_USERNAME }}/frontend:cache
+        cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:cache
+        cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:cache,mode=max
 
   Deploy:
     needs: Deliver
@@ -111,6 +111,6 @@ jobs:
         ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.HOST }} <<EOF
         sudo docker stop frontend || true
         sudo docker rm frontend || true
-        sudo docker pull realmarjo/frontend:latest
-        sudo docker run -d --name frontend -p 5173:5173 realmarjo/frontend:latest
+        sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+        sudo docker run -d --name frontend -p 5173:5173 ${{ secrets.DOCKER_USERNAME }}/frontend:latest
         EOF
