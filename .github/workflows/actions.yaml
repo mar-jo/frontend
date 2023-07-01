@@ -111,6 +111,6 @@ jobs:
         ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.HOST }} <<EOF
         sudo docker stop frontend || true
         sudo docker rm frontend || true
-        sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:latest
-        sudo docker run -d --name frontend -p 5173:5173 ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+        sudo docker pull realmarjo/frontend:latest
+        sudo docker run -d --name frontend -p 5173:5173 realmarjo/frontend:latest
         EOF
