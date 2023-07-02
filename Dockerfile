@@ -33,4 +33,4 @@ RUN rm -rf ./*
 COPY --from=build /src /app
 
 # Containers run nginx with global directives and daemon off
-ENTRYPOINT ["npm", "run", "start", "--", "--host"]
+ENTRYPOINT ["npm", "run", "dev", "--", "--host"]
