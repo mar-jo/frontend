@@ -1,6 +1,6 @@
 import axios from "axios";
-const port = 8080;
-const url = `http://localhost:${port}/todos`;
+const port = 3000;
+const url = `http://54.208.48.71:${port}/todos`;
 
 const setAuthToken = (token) => {
 	console.log("In setAuthToken", token);
