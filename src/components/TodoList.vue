@@ -14,11 +14,11 @@
 	<button @click="toggleDoneTodos">Done Todos</button>
 	<div v-if="showDoneTodos" class="done-todos">
 		<ul>	
-			<li v-for="todo in donetodos">
-				<!-- <h4>{{ day }}</h4> -->
-				<!-- <div v-for="todo in donetodos[day]"> -->
+			<li v-for="todoListOnDay in sortedAndGroupedByDayDoneTodos">
+				<h4>{{ todoListOnDay[0].updatedAt.slice(0,10) }}</h4>
+				<div v-for="todo in todoListOnDay">
 					<Todo :todo="todo" @done="done" @undone="undone" />
-				<!-- </div> -->
+				</div>
 			</li>
 		</ul>
 	</div>
@@ -51,7 +51,7 @@ export default {
 	},
 	methods: {
 		sortAndGroupByDay(array) {
-			const sortedArray = array.sort((a, b) => a.updatedAt.localeCompare(b.updatedAt));
+			const sortedArray = array.sort((b, a) => a.updatedAt.localeCompare(b.updatedAt));
 			const groupedByDay = {};
 			
 			sortedArray.forEach((element) => {
@@ -61,15 +61,16 @@ export default {
 				}
 				groupedByDay[day].push(element);
 			});
-			console.log("AKDOJDALKGJBADLKGJBADGLK", groupedByDay);
+			console.log(groupedByDay);
 			return groupedByDay;
 		},
 		async getAllSorted(){ 
 			const allTodos = await readTodos();
 			this.todos = allTodos.filter(todo => !todo.done);
 			this.donetodos = allTodos.filter(todo => todo.done);
-			this.sortedAndGroupedByDayDoneTodos = this.sortAndGroupByDay(allTodos);
-			console.log("BRRRUHHHHHH", this.sortedAndGroupedByDayDoneTodos);
+			console.log("ASKFJSALKGJASKJG", this.donetodos);
+			this.sortedAndGroupedByDayDoneTodos = this.sortAndGroupByDay(this.donetodos);
+			console.log("BRRRUHHHHdHH", this.sortedAndGroupedByDayDoneTodos);
 		},
 		async getAll() {
 			this.todos = await readTodos();
@@ -92,9 +93,11 @@ export default {
 				if(isDone){
 					this.removeFromList(this.todos, id);
 					this.donetodos.push(todo);	
+					this.sortedAndGroupedByDayDoneTodos = this.sortAndGroupByDay(this.donetodos);
 				} else {
 					this.removeFromList(this.donetodos, id);
 					this.todos.push(todo);
+					this.sortedAndGroupedByDayDoneTodos = this.sortAndGroupByDay(this.donetodos);
 				}
 			} else {
 				this.todos.forEach((value, i) => {
