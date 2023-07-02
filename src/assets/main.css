@@ -23,7 +23,7 @@ a,
 
 @media (min-width: 1024px) {
   body {
-    padding-top: 25%;
+    padding: 2rem;
     display: flex;
     justify-items: center;
   }

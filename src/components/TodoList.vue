@@ -11,7 +11,7 @@
 	</div>
 	 
 	
-	<button @click="toggleDoneTodos">Done Todos</button>
+	<button v-if="toggleRouter.featureIsEnabled(sortFeature)" @click="toggleDoneTodos">{{ toggleDoneBtnText }} Completed Todos</button>
 	<div v-if="showDoneTodos" class="done-todos">
 		<ul>	
 			<li v-for="todoListOnDay in sortedAndGroupedByDayDoneTodos">
@@ -42,6 +42,7 @@ export default {
 			todos: [],
 			donetodos: [],
 			sortedAndGroupedByDayDoneTodos: {},
+			toggleDoneBtnText: "Show",
 			days: [],
 			
 			sortFeature: "sort-feature" 
@@ -109,6 +110,7 @@ export default {
 		},
 		toggleDoneTodos(){
 			this.showDoneTodos = !this.showDoneTodos;
+			this.toggleDoneBtnText = this.toggleDoneBtnText == "Show" ? "Hide" : "Show";
 			console.log(this.sortedAndGroupedByDayDoneTodos);
 		},
 		removeFromList(list, id) {
