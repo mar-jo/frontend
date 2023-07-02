@@ -20,14 +20,17 @@ RUN npm run build
 # nginx state for serving content
 FROM node:18
 
+# EXPOSE Port 5173 to allow communication to/from server
+EXPOSE 5173
+
 # Set working directory to nginx asset directory
-WORKDIR /usr/share/nginx/html
+WORKDIR /app
 
 # Remove default nginx static assets
 RUN rm -rf ./*
 
 # Copy static build directory from builder stage
-COPY --from=build /src .
+COPY --from=build /src /app
 
 # Containers run nginx with global directives and daemon off
-ENTRYPOINT ["npm", "run", "start"]
+ENTRYPOINT ["npm", "run", "start", "--", "--host"]
