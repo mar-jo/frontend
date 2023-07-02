@@ -1,13 +1,13 @@
 <template>
 	<div>
 		<header>
-			<h1>My App</h1>
+			<h1>ToDo Manager</h1>
 			<div v-if="!isLoggedIn">
 				<button @click="showLoginModal">Login</button>
-				<button @click="showRegisterModal">Register</button>
 			</div>
 			<div v-if="isLoggedIn">
 				<h2>Welcome, {{ username }}!</h2>
+				<button @click="logoutUI">Logout</button>
 			</div>
 		</header>
 
@@ -24,7 +24,7 @@
 			:isLoggedIn="isLoggedIn"
 			@close="closeModal"
 			@login="login"
-			@logout="logout"
+			@logout="logoutUI"
 		/>
 	</div>
 </template>
@@ -32,6 +32,7 @@
 <script>
 import Modal from "./components/LoginSignup/Modal.vue";
 import TodoList from "@/components/TodoList.vue";
+import {logout} from '@/api';
 
 
 export default {
@@ -47,10 +48,6 @@ export default {
 		showLoginModal() {
 			this.showModal = true;
 			this.registerModal = false;
-		},
-		showRegisterModal() {
-			this.showModal = true;
-			this.registerModal = true;
 		},
 		closeModal() {
 			this.showModal = false;
@@ -68,7 +65,8 @@ export default {
 			this.username = username;
 			this.showModal = false;
 		},
-		logout() {
+		logoutUI() {
+			logout();
 			// Perform logout logic
 			this.isLoggedIn = false;
 			this.username = "";

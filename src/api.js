@@ -2,11 +2,6 @@ import axios from "axios";
 const port = 3000;
 const url = `http://54.208.48.71:${port}/todos`;
 
-const setAuthToken = (token) => {
-	console.log("In setAuthToken", token);
-	axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-	console.log("In setAuthToken after set: ", axios.defaults.headers.common["Authorization"]);
-};
 
 const register = async (username, password) => {
 	console.log("in register", { username: password });
@@ -18,7 +13,12 @@ const register = async (username, password) => {
 		return res.data;
 	} catch (error) {
 		console.log("Error in reg: ", error);
+		throw error.response.data;
 	}
+};
+
+const setAuthToken = (token) => {
+	axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 };
 
 const login = async (username, password) => {
@@ -31,6 +31,21 @@ const login = async (username, password) => {
 		// Set the token in cookies
 		console.log(res.data);
 		setAuthToken(res.data.user.token);
+		return res.data;
+	} catch (error) {
+		console.log("Error in login: ", error);
+		throw error.response.data;
+	}
+};
+
+const unsetAuthToken = () => {
+	axios.defaults.headers.common["Authorization"] = "";
+};
+const logout = async () => {
+	try {
+		const res = await axios.post(`${url}/logout`);
+		console.log(res.data);
+		unsetAuthToken();
 		return res.data;
 	} catch (error) {
 		console.log("Error in login: ", error);
@@ -68,4 +83,4 @@ const undoneTodo = async (id) => {
 
 
 
-export { login, register, readTodos, createTodo, doneTodo, undoneTodo };
+export { login, logout, register, readTodos, createTodo, doneTodo, undoneTodo };

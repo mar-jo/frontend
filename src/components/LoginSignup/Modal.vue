@@ -123,8 +123,13 @@ export default {
 		async onRegister() {
 			// Perform registration logic using this.registerUsername and this.registerPassword
 			// Reset form fields if needed
-			const loginRes = await register(this.registerUsername, this.registerPassword)
-			window.alert(loginRes);
+			let res;
+			try {
+				res = await register(this.registerUsername, this.registerPassword)
+			} catch (error) {
+				res = error;
+			}
+			window.alert(res);
 			this.registerUsername = "";
 			this.registerPassword = "";
 		},
