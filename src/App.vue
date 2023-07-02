@@ -6,10 +6,12 @@
 				<button @click="showLoginModal">Login</button>
 				<button @click="showRegisterModal">Register</button>
 			</div>
+			<div v-if="isLoggedIn">
+				<h2>Welcome, {{ username }}!</h2>
+			</div>
 		</header>
 
 		<main v-if="isLoggedIn">
-			<h2>Welcome, {{ username }}!</h2>
 			<!-- Your main content for logged in users -->
 			<main>
 				<TodoList />
@@ -30,6 +32,7 @@
 <script>
 import Modal from "./components/LoginSignup/Modal.vue";
 import TodoList from "@/components/TodoList.vue";
+
 
 export default {
 	data() {
