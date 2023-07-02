@@ -11,18 +11,25 @@
 		<main v-if="isLoggedIn">
 			<h2>Welcome, {{ username }}!</h2>
 			<!-- Your main content for logged in users -->
+			<main>
+				<TodoList />
+			</main>
 		</main>
 
 		<Modal
 			v-if="showModal"
 			:isRegister="registerModal"
+			:isLoggedIn="isLoggedIn"
 			@close="closeModal"
+			@login="login"
+			@logout="logout"
 		/>
 	</div>
 </template>
 
 <script>
 import Modal from "./components/LoginSignup/Modal.vue";
+import TodoList from "@/components/TodoList.vue";
 
 export default {
 	data() {
@@ -47,6 +54,7 @@ export default {
 		},
 		login(username) {
 			// Perform login logic
+			console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 			this.isLoggedIn = true;
 			this.username = username;
 			this.showModal = false;
@@ -65,6 +73,12 @@ export default {
 	},
 	components: {
 		Modal,
+		TodoList
 	},
 };
 </script>
+
+<style>
+
+
+</style>

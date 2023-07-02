@@ -73,8 +73,7 @@
 </template>
 
 <script>
-import {login} from '../../api.js'
-import {register} from '../../api.js'
+import {login, register} from '../../api.js'
 
 export default {
 	props: {
@@ -100,10 +99,26 @@ export default {
 		async onLogin() {
 			// Perform login logic using this.loginUsername and this.loginPassword
 			// Reset form fields if needed
-			const loginRes = await login(this.loginUsername, this.loginPassword)
-			window.alert(loginRes);
-			this.loginUsername = "";
-			this.loginPassword = "";
+			login(this.loginUsername, this.loginPassword)
+				.then((loginRes) => {
+					
+					// Access the returned values here
+					console.log(loginRes);
+					// Perform any additional actions based on the returned values
+					// Redirect to the homepage or handle the response as needed
+					this.$emit('login', loginRes.user.username);
+					alert(loginRes.message);
+					//window.location.href = "http://localhost:5173/todos/";
+				})
+				.catch((error) => {
+					console.log("Error in login: ", error);
+					window.alert(error.message);
+				})
+				.finally(() => {
+					// Reset form fields if needed
+					this.loginUsername = "";
+					this.loginPassword = "";
+				});
 		},
 		async onRegister() {
 			// Perform registration logic using this.registerUsername and this.registerPassword
@@ -182,5 +197,9 @@ export default {
 }
 .modal-body {
 	text-align: center;
+}
+
+.form-item{
+	color: black;
 }
 </style>
