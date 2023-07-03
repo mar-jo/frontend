@@ -38,7 +38,6 @@
 		</header>
 
 		<main v-if="isLoggedIn">
-			<!-- Your main content for logged in users -->
 			<main>
 				<TodoList />
 			</main>
@@ -122,7 +121,6 @@ export default {
 		},
 		async calculateABTestRes(){
 			this.groups = await abtest();
-			console.log( await abtest());
 		},
 		logoutUI() {
 			logout();
@@ -135,10 +133,8 @@ export default {
 		TodoList,
 	},
 	created() {
-		localStorage.clear();
-		this.toggleRouter.setFeature(this.ABTestResFeatName, false);
-		console.log("AFTER CREATED", localStorage);
-		console.log("fc", featureConfig);
+		this.toggleRouter.setFeature(this.ABTestResFeatName, true);
+		this.calculateABTestRes();
 	},
 };
 </script>

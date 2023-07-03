@@ -18,7 +18,6 @@
 </template>
 
 <script>
-//import { required } from "vuelidate/lib/validators";
 import { login } from "../../api";
 
 export default {
@@ -28,40 +27,22 @@ export default {
 			password: "",
 		};
 	},
-	// validations: {
-	// 	username: {
-	// 		required,
-	// 	},
-	// 	password: {
-	// 		required,
-	// 	},
-	// },
 	methods: {
 		async onSubmit() {
-			//this.$v.$touch();
-			//if (!this.$v.$invalid) {
-				// Perform login logic using this.loginUsername and this.loginPassword
-				// Reset form fields if needed
-				await login(this.username, this.password)
-					.then((loginRes) => {
-						
-						// Access the returned values here
-						console.log(loginRes);
-						// Perform any additional actions based on the returned values
-						// Redirect to the homepage or handle the response as needed
-						this.$emit('login', loginRes.user.username);
-						alert(loginRes.message);
-					})
-					.catch((error) => {
-						console.log("Error in login: ", error);
-						window.alert(error.message);
-					})
-					.finally(() => {
-						// Reset form fields if needed
-						this.username = "";
-						this.password = "";
-					});
-			//}
+			// Perform login logic
+			await login(this.username, this.password)
+				.then((loginRes) => {
+					this.$emit('login', loginRes.user.username);
+					alert(loginRes.message);
+				})
+				.catch((error) => {
+					console.log("Login failed: ", error);
+					window.alert(error.message);
+				})
+				.finally(() => {
+					this.username = "";
+					this.password = "";
+				});
 		},
 		onClose() {
 			this.username = "";

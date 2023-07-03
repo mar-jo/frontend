@@ -9,7 +9,6 @@
 			</li>
 		</ul>
 	</div>
-	 
 	
 	<button v-if="toggleRouter.featureIsEnabled(sortFeature)" @click="toggleDoneTodos">{{ toggleDoneBtnText }} Completed Todos</button>
 	<div v-if="showDoneTodos" class="done-todos">
@@ -43,8 +42,7 @@ export default {
 			donetodos: [],
 			sortedAndGroupedByDayDoneTodos: {},
 			toggleDoneBtnText: "Show",
-			days: [],
-			
+			days: [],	
 			sortFeature: "use-sorting-feature" 
 		};
 	},
@@ -67,13 +65,10 @@ export default {
 		},
 		async getAllSorted(){ 
 			const allTodos = await readTodos();
-			console.log("ALLTODOS HEAAAAST", allTodos);
 			if(allTodos && allTodos != null){
 				this.todos = allTodos.filter(todo => !todo.done);
 				this.donetodos = allTodos.filter(todo => todo.done);
-				console.log("ASKFJSALKGJASKJG", this.donetodos);
 				this.sortedAndGroupedByDayDoneTodos = this.sortAndGroupByDay(this.donetodos);
-				console.log("BRRRUHHHHdHH", this.sortedAndGroupedByDayDoneTodos);
 			}
 		},
 		async getAll() {
@@ -133,7 +128,6 @@ export default {
 
 		this.toggleRouter.setFeature(this.sortFeature, true);
 
-		console.log("SORT FEATURE ENABLED???", this.toggleRouter.featureIsEnabled(this.sortFeature));
 		if(this.toggleRouter.featureIsEnabled(this.sortFeature)){
 			this.getAllSorted();
 		} else {

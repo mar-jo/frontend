@@ -37,7 +37,6 @@ export default {
 		},
 	},
 	mounted() {
-		console.log(this.currentForm);
 		document.body.addEventListener("keyup", (event) => {
 			if (event.key === "Escape") {
 				this.$emit("close");
