@@ -123,7 +123,7 @@ export default {
 		}
 	},
 	created() {
-		this.toggleRouter.setFeature(this.sortFeature, true);
+		this.toggleRouter.setFeature(this.sortFeature, false);
 		if(this.toggleRouter.featureIsEnabled(this.sortFeature)){
 			this.getAllSorted();
 		} else {
