@@ -3,7 +3,9 @@
 		<header>
 			<h1>ToDo Manager</h1>
 			<div v-if="!isLoggedIn">
-				<button @click="showLoginModal">Login</button>
+				<button type="button" class="btn btn-success m-1" @click="showLoginModal">Login</button>
+
+				<button type="button" class="btn btn-success m-1" @click="showRegisterModal">Register</button>
 			</div>
 			<div v-if="isLoggedIn">
 				<h2>Welcome, {{ username }}!</h2>
@@ -20,10 +22,10 @@
 
 		<Modal
 			v-if="showModal"
-			:isRegister="registerModal"
-			:isLoggedIn="isLoggedIn"
+			:currentForm="whichModal"
 			@close="closeModal"
 			@login="login"
+			@register="register"
 			@logout="logoutUI"
 		/>
 	</div>
@@ -32,84 +34,84 @@
 <script>
 import Modal from "./components/LoginSignup/Modal.vue";
 import TodoList from "@/components/TodoList.vue";
-import {logout} from '@/api';
-
+import { logout } from "@/api";
 
 export default {
 	data() {
 		return {
 			isLoggedIn: false,
 			showModal: false,
-			registerModal: false,
 			username: "",
+			whichModal: ""
 		};
 	},
 	methods: {
 		showLoginModal() {
+			this.whichModal = "login";
 			this.showModal = true;
-			this.registerModal = false;
+			console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASNLKFNLGAKNSALKNGALKSNGLKASNGLKn");
+		},
+		showRegisterModal() {
+			this.whichModal = "register";
+			this.showModal = true;
 		},
 		closeModal() {
 			this.showModal = false;
 		},
 		login(username) {
-			// Perform login logic
-			console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 			this.isLoggedIn = true;
 			this.username = username;
 			this.showModal = false;
 		},
 		register(username) {
-			// Perform registration logic
 			this.isLoggedIn = true;
 			this.username = username;
 			this.showModal = false;
 		},
 		logoutUI() {
 			logout();
-			// Perform logout logic
 			this.isLoggedIn = false;
 			this.username = "";
 		},
 	},
 	components: {
 		Modal,
-		TodoList
+		TodoList,
 	},
 };
 </script>
 
 <style>
-
 button {
-  background-color: #42b883;
-  border-radius: 8px;
-  border-style: none;
-  box-sizing: border-box;
-  color: #FFFFFF;
-  cursor: pointer;
-  display: inline-block;
-  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  height: 40px;
-  line-height: 20px;
-  list-style: none;
-  margin: 0;
-  outline: none;
-  padding: 10px 16px;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  transition: color 100ms;
-  vertical-align: baseline;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+	background-color: rgb(66, 184, 131);
+	border-radius: 8px;
+	border-style: none;
+	box-sizing: border-box;
+	color: #ffffff;
+	cursor: pointer;
+	display: inline-block;
+	font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
+		sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	height: 40px;
+	line-height: 20px;
+	list-style: none;
+	margin: 1em;
+	outline: none;
+	padding: 10px 16px;
+	position: relative;
+	text-align: center;
+	text-decoration: none;
+	transition: color 100ms;
+	vertical-align: baseline;
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: manipulation;
 }
 
 button:hover,
 button:focus {
-  background-color: #28f498;
+	background-color: rgb(100, 250, 180);
 }
 </style>

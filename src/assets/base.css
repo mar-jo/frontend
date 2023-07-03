@@ -23,6 +23,10 @@
 
 /* semantic color variables for this project */
 :root {
+  --green_1: 66, 184, 131;
+  --green_2: 227, 242, 235;
+  --primary_100: var(var(--green_1));
+  --primary_1000: var(var(--green_2));
   --color-background: var(--vt-c-white);
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
