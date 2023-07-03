@@ -2,60 +2,39 @@
 
     <div>
 
-        <div slot="body">
-            <form @submit.prevent="onSubmit">  
-                <!---username -->
-                <div class="form-item" :class="{ errorInput: $v.username.$error }">
-                    <label>username</label>
-                    <!-- <p class="errorText" v-if="!$v.username.required"> username is required </p>
-                    <p class="errorText" v-if="!$v.username.minLength"> username is not correct </p>   -->                
-                    <!-- <input 
-                        v-model="username"
-                        :class="{ error: $v.username.$error }"
-                        @change="$v.username.$touch"> -->
-                    <input
-                        class="reg-username-input"
-                        type="text"
-                        placeholder="Enter username..."
-                        v-model="username"
-                        @keyup.enter="enter"
-                    />
-                </div>
-                 <!---password -->
-                <div class="form-item" :class="{ errorInput: $v.password.$error }">
-                    <!-- <label>Password</label>
-                    <p class="errorText" v-if="!$v.password.required"> Password is required </p>
-                    <p class="errorText" v-if="!$v.password.minLength"> Password must have at least {{ $v.password.$params.minLength.min }} symbols  </p>                  
-                     -->
-                    <input type="password"
-                        v-model="password"
-                        :class="{ error: $v.password.$error }"
-                        @change="$v.password.$touch">
-                </div>
-                 <div class="form-item" :class="{ errorInput: $v.repeatPassword.$error }">
-                    <label>Repeat password</label>                   
-                    <p class="errorText" v-if="!$v.repeatPassword.sameAsPassword"> Password is not the same!  </p>                  
-                    <input type="password"
-                        v-model="repeatPassword"
-                        :class="{ error: $v.repeatPassword.$error }"
-                        @change="$v.repeatPassword.$touch">
-                </div>               
+        <form @submit.prevent="onRegister">
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">@</span>
+                <input type="text" class="form-control" placeholder="Username" v-model="username" aria-label="Username" aria-describedby="addon-wrapping" required>
+            </div>
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+                      </svg>
+                </span>
+                <input type="password" class="form-control" placeholder="Password" v-model="password" aria-label="Password" aria-describedby="addon-wrapping" required>
+            </div>
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+                      </svg>
+                </span>
+                <input type="password" class="form-control" placeholder="Confirm Password" v-model="confirmPassword" aria-label="ConfirmPassword" aria-describedby="addon-wrapping" required>
+            </div>
 
-                <button class="btn btnPrimary" >Register</button>
-            </form>
-        </div>
+            <button @click="onSubmit" class="btn btn-success">Register</button>
+        </form>
 
-        <div slot="switch">
-             <button class="btn btnWhite" @click="$emit('switch')">Already have an account? Login</button>
-        </div>
     </div>
     
 </template>
 
 <script>
 //Plugins
-import { required, minLength, sameAs} from 'vuelidate/lib/validators';
-import register from '../../api'
+//import { required, minLength, sameAs} from 'vuelidate/lib/validators';
+import { register } from '../../api'
 
 //import Modals from '@/components/LoginSignup/Modal.vue';
 export default {
@@ -66,42 +45,52 @@ export default {
         return {          
             username: '',
             password: '',
-            repeatPassword: ''
+            confirmPassword: ''
         }
     },
-    validations: {
-        username: {
-            required
-        },
-        password: {
-            required,
-            minLength: minLength(6)
-        },
-        repeatPassword: {
-            required,
-            sameAsPassword: sameAs('password')
-        }
-    },
+    // validations: {
+    //     username: {
+    //         required
+    //     },
+    //     password: {
+    //         required,
+    //         minLength: minLength(6)
+    //     },
+    //     repeatPassword: {
+    //         required,
+    //         sameAsPassword: sameAs('password')
+    //     }
+    // },
     methods: {
-        onSubmit () {
-            this.$v.$touch();
-            if (!this.$v.$invalid) {
-                register(this.username, this.password);
+        async onSubmit() {
+            //this.$v.$touch();
+            //if (!this.$v.$invalid) {
 
-                //When done               
-                this.username = '';
-                this.password = '';
-                this.repeatPassword = '';
-                this.$v.$reset();
+                //When done            
+                // Perform registration logic using this.registerUsername and this.registerPassword
+                // Reset form fields if needed
+                let res;
+                try {
+                    res = await register(this.username, this.password)
+                } catch (error) {
+                    res = error;
+                }
+                window.alert(res);
+                this.clearInputs();
+                //this.$v.$reset();
                 this.$emit("close")
-            }           
+
+            //}           
         },
         onClose() {           
+            this.clearInputs();
+            //this.$v.$reset();
+            this.$emit("close")
+        },
+        clearInputs(){
             this.username = '';
             this.password = '';
             this.repeatPassword = '';
-            this.$v.$reset();
-            this.$emit("close")
         }
     }
   
