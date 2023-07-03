@@ -133,7 +133,7 @@ export default {
 		TodoList,
 	},
 	created() {
-		this.toggleRouter.setFeature(this.ABTestResFeatName, true);
+		this.toggleRouter.setFeature(this.ABTestResFeatName, false);
 		this.calculateABTestRes();
 	},
 };
