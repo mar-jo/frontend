@@ -3,7 +3,7 @@ name: Frontend Pipeline
 on:
   push:
     branches:
-      - main
+      - deploy/production
 
 jobs:
   Lint:
