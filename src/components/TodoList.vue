@@ -28,8 +28,8 @@
 import Todo from "@/components/Todo.vue";
 import TodoInput from "@/components/TodoInput.vue";
 import { createTodo, doneTodo, readTodos, undoneTodo } from "@/api";
-import featureConfig from "../featureToggles/featureConfig";
-import createToggleRouter from "../featureToggles/featureToggleRouter";
+import featureConfig from "@/featureToggles/featureConfig";
+import createToggleRouter from "@/featureToggles/featureToggleRouter";
 
 
 export default {
@@ -45,7 +45,7 @@ export default {
 			toggleDoneBtnText: "Show",
 			days: [],
 			
-			sortFeature: "sort-feature" 
+			sortFeature: "use-sorting-feature" 
 		};
 	},
 	setup() {
@@ -67,11 +67,14 @@ export default {
 		},
 		async getAllSorted(){ 
 			const allTodos = await readTodos();
-			this.todos = allTodos.filter(todo => !todo.done);
-			this.donetodos = allTodos.filter(todo => todo.done);
-			console.log("ASKFJSALKGJASKJG", this.donetodos);
-			this.sortedAndGroupedByDayDoneTodos = this.sortAndGroupByDay(this.donetodos);
-			console.log("BRRRUHHHHdHH", this.sortedAndGroupedByDayDoneTodos);
+			console.log("ALLTODOS HEAAAAST", allTodos);
+			if(allTodos && allTodos != null){
+				this.todos = allTodos.filter(todo => !todo.done);
+				this.donetodos = allTodos.filter(todo => todo.done);
+				console.log("ASKFJSALKGJASKJG", this.donetodos);
+				this.sortedAndGroupedByDayDoneTodos = this.sortAndGroupByDay(this.donetodos);
+				console.log("BRRRUHHHHdHH", this.sortedAndGroupedByDayDoneTodos);
+			}
 		},
 		async getAll() {
 			this.todos = await readTodos();
@@ -123,7 +126,14 @@ export default {
 		}
 	},
 	created() {
-		this.toggleRouter.setFeature(this.sortFeature, false);
+		console.log(this.toggleRouter);
+		/* FEATURE FLAG
+		 * Just change the 2nd param (bool) and it will de-/activate
+		 */
+
+		this.toggleRouter.setFeature(this.sortFeature, true);
+
+		console.log("SORT FEATURE ENABLED???", this.toggleRouter.featureIsEnabled(this.sortFeature));
 		if(this.toggleRouter.featureIsEnabled(this.sortFeature)){
 			this.getAllSorted();
 		} else {

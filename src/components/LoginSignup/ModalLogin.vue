@@ -51,7 +51,6 @@ export default {
 						// Redirect to the homepage or handle the response as needed
 						this.$emit('login', loginRes.user.username);
 						alert(loginRes.message);
-						//window.location.href = "http://localhost:5173/todos/";
 					})
 					.catch((error) => {
 						console.log("Error in login: ", error);
@@ -67,7 +66,6 @@ export default {
 		onClose() {
 			this.username = "";
 			this.password = "";
-			this.$v.$reset();
 			this.$emit("close");
 		},
 	},

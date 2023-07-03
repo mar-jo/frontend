@@ -32,15 +32,8 @@
 </template>
 
 <script>
-//Plugins
-//import { required, minLength, sameAs} from 'vuelidate/lib/validators';
 import { register } from '../../api'
-
-//import Modals from '@/components/LoginSignup/Modal.vue';
 export default {
-    // components: {
-    //     Modals
-    // },
     data() {
         return {          
             username: '',
@@ -48,43 +41,21 @@ export default {
             confirmPassword: ''
         }
     },
-    // validations: {
-    //     username: {
-    //         required
-    //     },
-    //     password: {
-    //         required,
-    //         minLength: minLength(6)
-    //     },
-    //     repeatPassword: {
-    //         required,
-    //         sameAsPassword: sameAs('password')
-    //     }
-    // },
     methods: {
         async onSubmit() {
-            //this.$v.$touch();
-            //if (!this.$v.$invalid) {
-
-                //When done            
-                // Perform registration logic using this.registerUsername and this.registerPassword
-                // Reset form fields if needed
-                let res;
-                try {
-                    res = await register(this.username, this.password)
-                } catch (error) {
-                    res = error;
-                }
-                window.alert(res);
-                this.clearInputs();
-                //this.$v.$reset();
-                this.$emit("close")
-
-            //}           
+            let res;
+            try {
+                res = await register(this.username, this.password)
+                this.$emit("register");
+            } catch (error) {
+                res = error;
+            }
+            window.alert(res);
+            this.clearInputs();
+            this.$emit("close")
         },
         onClose() {           
             this.clearInputs();
-            //this.$v.$reset();
             this.$emit("close")
         },
         clearInputs(){
@@ -93,7 +64,6 @@ export default {
             this.repeatPassword = '';
         }
     }
-  
 }
 </script>
 

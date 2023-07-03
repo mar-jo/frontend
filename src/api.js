@@ -5,10 +5,12 @@ const url = `http://54.208.48.71:${port}/todos`;
 
 const register = async (username, password) => {
 	console.log("in register", { username: password });
+	console.log(localStorage);
 	try {
 		const res = await axios.post(`${url}/register`, {
 			username: username,
 			password: password,
+			group: localStorage["btn-group"]
 		});
 		return res.data;
 	} catch (error) {
@@ -81,6 +83,12 @@ const undoneTodo = async (id) => {
 	return res.data;
 };
 
+const abtest = async () => {
+	let res = await axios.get(`${url}/ab-test`);
+
+	return res.data;
+};
 
 
-export { login, logout, register, readTodos, createTodo, doneTodo, undoneTodo };
+
+export { login, logout, register, readTodos, createTodo, doneTodo, undoneTodo, abtest };
