@@ -9,7 +9,6 @@
 			</li>
 		</ul>
 	</div>
-	 
 	
 	<button v-if="toggleRouter.featureIsEnabled(sortFeature)" @click="toggleDoneTodos">{{ toggleDoneBtnText }} Completed Todos</button>
 	<div v-if="showDoneTodos" class="done-todos">
@@ -21,15 +20,15 @@
 				</div>
 			</li>
 		</ul>
-	</div>
+  </div>
 </template>
 
 <script>
 import Todo from "@/components/Todo.vue";
 import TodoInput from "@/components/TodoInput.vue";
 import { createTodo, doneTodo, readTodos, undoneTodo } from "@/api";
-import featureConfig from "../featureToggles/featureConfig";
-import createToggleRouter from "../featureToggles/featureToggleRouter";
+import featureConfig from "@/featureToggles/featureConfig";
+import createToggleRouter from "@/featureToggles/featureToggleRouter";
 
 
 export default {
@@ -43,12 +42,23 @@ export default {
 			donetodos: [],
 			sortedAndGroupedByDayDoneTodos: {},
 			toggleDoneBtnText: "Show",
-			days: [],
-			
-			sortFeature: "sort-feature" 
+			days: [],	
+			sortFeature: "use-sorting-feature" 
 		};
 	},
-	setup() {
+	created() {
+		console.log(this.toggleRouter);
+		/* FEATURE FLAG
+		 * Just change the 2nd param (bool) and it will de-/activate
+		 */
+
+		this.toggleRouter.setFeature(this.sortFeature, true);
+
+		if(this.toggleRouter.featureIsEnabled(this.sortFeature)){
+			this.getAllSorted();
+		} else {
+			this.getAll();
+		}
 	},
 	methods: {
 		sortAndGroupByDay(array) {
@@ -67,11 +77,11 @@ export default {
 		},
 		async getAllSorted(){ 
 			const allTodos = await readTodos();
-			this.todos = allTodos.filter(todo => !todo.done);
-			this.donetodos = allTodos.filter(todo => todo.done);
-			console.log("ASKFJSALKGJASKJG", this.donetodos);
-			this.sortedAndGroupedByDayDoneTodos = this.sortAndGroupByDay(this.donetodos);
-			console.log("BRRRUHHHHdHH", this.sortedAndGroupedByDayDoneTodos);
+			if(allTodos && allTodos != null){
+				this.todos = allTodos.filter(todo => !todo.done);
+				this.donetodos = allTodos.filter(todo => todo.done);
+				this.sortedAndGroupedByDayDoneTodos = this.sortAndGroupByDay(this.donetodos);
+			}
 		},
 		async getAll() {
 			this.todos = await readTodos();
@@ -120,14 +130,6 @@ export default {
 				list.splice(index, 1);
 				return itemToRemove;
 			}
-		}
-	},
-	created() {
-		this.toggleRouter.setFeature(this.sortFeature, true);
-		if(this.toggleRouter.featureIsEnabled(this.sortFeature)){
-			this.getAllSorted();
-		} else {
-			this.getAll();
 		}
 	},
 };

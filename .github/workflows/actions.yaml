@@ -3,7 +3,7 @@ name: Frontend Pipeline
 on:
   push:
     branches:
-      - main
+      - deploy/production
 
 jobs:
   Lint:
@@ -95,3 +95,22 @@ jobs:
         tags: ${{ secrets.DOCKER_USERNAME }}/frontend:latest, ${{ secrets.DOCKER_USERNAME }}/frontend:cache
         cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:cache
         cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:cache,mode=max
+
+  Deploy:
+    needs: Deliver
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Install SSH key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.KEY }}
+
+    - name: Execute commands on remote server
+      run: |
+        ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.HOST }} <<EOF
+        sudo docker stop frontend || true
+        sudo docker rm frontend || true
+        sudo docker pull realmarjo/frontend:latest
+        sudo docker run -d --name frontend -p 5173:5173 realmarjo/frontend:latest
+        EOF

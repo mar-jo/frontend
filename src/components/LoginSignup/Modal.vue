@@ -37,18 +37,19 @@ export default {
 		},
 	},
 	mounted() {
-		console.log(this.currentForm);
 		document.body.addEventListener("keyup", (event) => {
 			if (event.key === "Escape") {
 				this.$emit("close");
-				this.formValue = "login";
+				this.currentForm = "login";
 			}
 		});
 	},
 	methods: {
 		login(username){
-			console.log("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNBBBBBBBBBBBBBBBBBBBBB");
 			this.$emit('login', username);
+		},
+		register(){
+			this.$emit('register');
 		}
 	}
 };

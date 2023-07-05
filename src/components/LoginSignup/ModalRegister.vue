@@ -21,7 +21,7 @@
                         <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
                       </svg>
                 </span>
-                <input type="password" class="form-control" placeholder="Confirm Password" v-model="confirmPassword" aria-label="ConfirmPassword" aria-describedby="addon-wrapping" required>
+                <input type="password" class="form-control" placeholder="Confirm Password" v-model="repeatPassword" aria-label="ConfirmPassword" aria-describedby="addon-wrapping" required>
             </div>
 
             <button @click="onSubmit" class="btn btn-success">Register</button>
@@ -32,15 +32,8 @@
 </template>
 
 <script>
-//Plugins
-//import { required, minLength, sameAs} from 'vuelidate/lib/validators';
 import { register } from '../../api'
-
-//import Modals from '@/components/LoginSignup/Modal.vue';
 export default {
-    // components: {
-    //     Modals
-    // },
     data() {
         return {          
             username: '',
@@ -48,43 +41,25 @@ export default {
             confirmPassword: ''
         }
     },
-    // validations: {
-    //     username: {
-    //         required
-    //     },
-    //     password: {
-    //         required,
-    //         minLength: minLength(6)
-    //     },
-    //     repeatPassword: {
-    //         required,
-    //         sameAsPassword: sameAs('password')
-    //     }
-    // },
     methods: {
         async onSubmit() {
-            //this.$v.$touch();
-            //if (!this.$v.$invalid) {
-
-                //When done            
-                // Perform registration logic using this.registerUsername and this.registerPassword
-                // Reset form fields if needed
-                let res;
-                try {
-                    res = await register(this.username, this.password)
-                } catch (error) {
-                    res = error;
-                }
-                window.alert(res);
-                this.clearInputs();
-                //this.$v.$reset();
-                this.$emit("close")
-
-            //}           
+            if(this.password !== this.repeatPassword){
+                alert("Passwords do not match!");
+                return;
+            }
+            let res;
+            try {
+                res = await register(this.username, this.password)
+                this.$emit("register");
+            } catch (error) {
+                res = error;
+            }
+            window.alert(res);
+            this.clearInputs();
+            this.$emit("close")
         },
         onClose() {           
             this.clearInputs();
-            //this.$v.$reset();
             this.$emit("close")
         },
         clearInputs(){
@@ -93,7 +68,6 @@ export default {
             this.repeatPassword = '';
         }
     }
-  
 }
 </script>
 

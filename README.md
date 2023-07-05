@@ -46,6 +46,5 @@ next day, finished Todos stay in the day when they were finished.
     - part of a bigger feature, make sure that this feature is behind a *feature toggle*, which can be turn on and off at runtime.
 3. RegisterButtonABTesting: Create a register button in two different colors and two different
 headlines.
-    - should be used in an AB-Test. Split your users into two
-different groups and deliver two different register buttons and headlines to
+    - should be used in an AB-Test. Split your users into two different groups and deliver two different register buttons and headlines to
 the end user.
