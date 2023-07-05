@@ -2,8 +2,9 @@ name: Frontend Pipeline
 
 on:
   push:
-    branches:
-      - deploy/production
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   Lint:
@@ -23,8 +24,19 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Test
-      run: echo Tests not implemented yet
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+        
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Run Tests
+      run: npx vitest
       
   Build:
     needs: Test
@@ -95,22 +107,3 @@ jobs:
         tags: ${{ secrets.DOCKER_USERNAME }}/frontend:latest, ${{ secrets.DOCKER_USERNAME }}/frontend:cache
         cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:cache
         cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:cache,mode=max
-
-  Deploy:
-    needs: Deliver
-    runs-on: ubuntu-latest
-    steps:
-
-    - name: Install SSH key
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.KEY }}
-
-    - name: Execute commands on remote server
-      run: |
-        ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.HOST }} <<EOF
-        sudo docker stop frontend || true
-        sudo docker rm frontend || true
-        sudo docker pull realmarjo/frontend:latest
-        sudo docker run -d --name frontend -p 5173:5173 realmarjo/frontend:latest
-        EOF
