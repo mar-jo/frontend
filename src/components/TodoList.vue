@@ -20,7 +20,7 @@
 				</div>
 			</li>
 		</ul>
-	</div>
+  </div>
 </template>
 
 <script>
@@ -46,7 +46,19 @@ export default {
 			sortFeature: "use-sorting-feature" 
 		};
 	},
-	setup() {
+	created() {
+		console.log(this.toggleRouter);
+		/* FEATURE FLAG
+		 * Just change the 2nd param (bool) and it will de-/activate
+		 */
+
+		this.toggleRouter.setFeature(this.sortFeature, true);
+
+		if(this.toggleRouter.featureIsEnabled(this.sortFeature)){
+			this.getAllSorted();
+		} else {
+			this.getAll();
+		}
 	},
 	methods: {
 		sortAndGroupByDay(array) {
@@ -118,20 +130,6 @@ export default {
 				list.splice(index, 1);
 				return itemToRemove;
 			}
-		}
-	},
-	created() {
-		console.log(this.toggleRouter);
-		/* FEATURE FLAG
-		 * Just change the 2nd param (bool) and it will de-/activate
-		 */
-
-		this.toggleRouter.setFeature(this.sortFeature, true);
-
-		if(this.toggleRouter.featureIsEnabled(this.sortFeature)){
-			this.getAllSorted();
-		} else {
-			this.getAll();
 		}
 	},
 };

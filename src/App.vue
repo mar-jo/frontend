@@ -1,3 +1,89 @@
+<script>
+import Modal from "./components/LoginSignup/Modal.vue";
+import TodoList from "@/components/TodoList.vue";
+import { abtest, logout } from "@/api";
+import featureConfig from "@/featureToggles/featureConfig"; 
+import createToggleRouter from "@/featureToggles/featureToggleRouter";
+
+
+export default {
+	components: {
+		Modal,
+		TodoList,
+	},
+	data() {
+		return {
+			isLoggedIn: false,
+			showModal: false,
+			username: "",
+			whichModal: "",
+			toggleRouter: createToggleRouter(featureConfig),
+			ABTestResFeatName: "show-abtest-result",
+			groups: 
+			{
+				"btn-1": 0,
+				"btn-2": 0
+			}
+		};
+	},
+	computed: {
+		registerButtonClass() {
+			console.log(this.groups);
+			const group =
+			Math.random() < 0.5
+			? Object.keys(this.groups)[0]
+			: Object.keys(this.groups)[1];
+			if (!localStorage.getItem("btn-group")) {
+				localStorage.setItem("btn-group", group);
+				console.log("NN", localStorage);
+			}
+			return group;
+		},
+		registerButtonLabel() {
+			if (this.registerButtonClass === Object.keys(this.groups)[0]) {
+				return "Register Now!";
+			} else {
+				return "Register";
+			}
+		},
+	},
+	created() {
+		this.toggleRouter.setFeature(this.ABTestResFeatName, true);
+		this.calculateABTestRes();
+	},
+	methods: {
+		showLoginModal() {
+			this.whichModal = "login";
+			this.showModal = true;
+		},
+		showRegisterModal() {
+			this.showModal = true;
+			this.whichModal = "register";
+		},
+		closeModal() {
+			this.showModal = false;
+		},
+		login(username) {
+			this.isLoggedIn = true;
+			this.username = username;
+			this.showModal = false;
+		},
+		register() {
+			this.calculateABTestRes();
+		},
+		async calculateABTestRes(){
+			this.groups = await abtest();
+		},
+		logoutUI() {
+			logout();
+			console.log();
+			this.isLoggedIn = false;
+			this.username = "";
+		},
+	},
+};
+</script>
+
 <template>
 	<div>
 		<header>
@@ -11,7 +97,7 @@
 					Login
 				</button>
 
-				<button @click="showRegisterModal" :class="registerButtonClass">
+				<button @click="showRegisterModal" :class="registerButtonClass" id="registerBtn">
 					{{ registerButtonLabel }}
 				</button>
 			</div>
@@ -22,10 +108,10 @@
 			<div v-if="this.toggleRouter.featureIsEnabled(this.ABTestResFeatName)">
 				<table class="table">
 					<thead>
-					  <tr>
-						<th scope="col">Group Name</th>
-						<th scope="col">Click Through Rate</th>
-					  </tr>
+						<tr>
+							<th scope="col">Group Name</th>
+							<th scope="col">Click Through Rate</th>
+						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="(value, key) in groups">
@@ -54,90 +140,7 @@
 	</div>
 </template>
 
-<script>
-import Modal from "./components/LoginSignup/Modal.vue";
-import TodoList from "@/components/TodoList.vue";
-import { abtest, logout } from "@/api";
-import featureConfig from "@/featureToggles/featureConfig"; 
-import createToggleRouter from "@/featureToggles/featureToggleRouter";
 
-
-export default {
-	data() {
-		return {
-			isLoggedIn: false,
-			showModal: false,
-			username: "",
-			whichModal: "",
-			toggleRouter: createToggleRouter(featureConfig),
-			ABTestResFeatName: "show-abtest-result",
-			groups: 
-			{
-				"btn-1": 0,
-				"btn-2": 0
-			}
-		};
-	},
-	computed: {
-		registerButtonClass() {
-			console.log(this.groups);
-			const group =
-				Math.random() < 0.5
-					? Object.keys(this.groups)[0]
-					: Object.keys(this.groups)[1];
-			if (!localStorage.getItem("btn-group")) {
-				localStorage.setItem("btn-group", group);
-				console.log("NN", localStorage);
-			}
-			return group;
-		},
-		registerButtonLabel() {
-			if (this.registerButtonClass === Object.keys(this.groups)[0]) {
-				return "Register Now!";
-			} else {
-				return "Register";
-			}
-		},
-	},
-	methods: {
-		showLoginModal() {
-			this.whichModal = "login";
-			this.showModal = true;
-		},
-		showRegisterModal() {
-			this.showModal = true;
-			this.whichModal = "register";
-		},
-		closeModal() {
-			this.showModal = false;
-		},
-		login(username) {
-			this.isLoggedIn = true;
-			this.username = username;
-			this.showModal = false;
-		},
-		register() {
-			this.calculateABTestRes();
-		},
-		async calculateABTestRes(){
-			this.groups = await abtest();
-		},
-		logoutUI() {
-			logout();
-			this.isLoggedIn = false;
-			this.username = "";
-		},
-	},
-	components: {
-		Modal,
-		TodoList,
-	},
-	created() {
-		this.toggleRouter.setFeature(this.ABTestResFeatName, false);
-		this.calculateABTestRes();
-	},
-};
-</script>
 
 <style>
 button {
