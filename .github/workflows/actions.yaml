@@ -2,8 +2,9 @@ name: Frontend Pipeline
 
 on:
   push:
-    branches:
-      - deploy/production
+    branches: [ deploy/production ]
+  pull_request:
+    branches: [ deploy/production ]
 
 jobs:
   Lint:
@@ -23,8 +24,19 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Test
-      run: echo Tests not implemented yet
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+        
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Run Tests
+      run: npx vitest
       
   Build:
     needs: Test
