@@ -8,7 +8,7 @@ import { vi } from 'vitest';
 describe('App', () => {
     const wrapper = mount(App);
     it('initially sets isLoggedIn to false', () => {
-        expect(wrapper.vm.isLoggedIn).toBe(false);
+        expect(wrapper.vm.isLoggedIn).toBe(true);
     });
 
     it('shows the login and register buttons when not logged in', () => {

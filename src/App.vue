@@ -47,7 +47,7 @@ export default {
 		},
 	},
 	created() {
-		this.toggleRouter.setFeature(this.ABTestResFeatName, false);
+		this.toggleRouter.setFeature(this.ABTestResFeatName, true);
 		this.calculateABTestRes();
 	},
 	methods: {
