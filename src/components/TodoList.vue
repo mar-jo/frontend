@@ -51,7 +51,7 @@ export default {
 		/* FEATURE FLAG
 		 * Just change the 2nd param (bool) and it will de-/activate
 		 */
-		this.toggleRouter.setFeature(this.sortFeature, true);
+		this.toggleRouter.setFeature(this.sortFeature, false);
 
 		if(this.toggleRouter.featureIsEnabled(this.sortFeature)){
 			this.getAllSorted();
