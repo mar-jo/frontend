@@ -30,12 +30,11 @@ export default {
 		registerButtonClass() {
 			console.log(this.groups);
 			const group =
-			Math.random() < 0.5
-			? Object.keys(this.groups)[0]
-			: Object.keys(this.groups)[1];
+				Math.random() < 0.5
+					? Object.keys(this.groups)[0]
+					: Object.keys(this.groups)[1];
 			if (!localStorage.getItem("btn-group")) {
 				localStorage.setItem("btn-group", group);
-				console.log("NN", localStorage);
 			}
 			return group;
 		},
@@ -48,7 +47,7 @@ export default {
 		},
 	},
 	created() {
-		this.toggleRouter.setFeature(this.ABTestResFeatName, true);
+		this.toggleRouter.setFeature(this.ABTestResFeatName, false);
 		this.calculateABTestRes();
 	},
 	methods: {
