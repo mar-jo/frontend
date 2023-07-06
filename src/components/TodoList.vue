@@ -47,11 +47,10 @@ export default {
 		};
 	},
 	created() {
-		console.log(this.toggleRouter);
+		console.log("Test");
 		/* FEATURE FLAG
 		 * Just change the 2nd param (bool) and it will de-/activate
 		 */
-
 		this.toggleRouter.setFeature(this.sortFeature, true);
 
 		if(this.toggleRouter.featureIsEnabled(this.sortFeature)){
